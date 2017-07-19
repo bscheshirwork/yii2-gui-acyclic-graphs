@@ -1,6 +1,6 @@
 <?php
 
-use githubjeka\rbac\Module;
+use bscheshirwork\gui\Module;
 use yii\helpers\Html;
 
 /* @var $this \yii\web\View */

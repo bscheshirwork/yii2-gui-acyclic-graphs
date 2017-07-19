@@ -1,5 +1,5 @@
 <?php
-namespace githubjeka\rbac\controllers;
+namespace bscheshirwork\gui\controllers;
 
 use yii\web\Controller;
 

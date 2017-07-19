@@ -1,10 +1,10 @@
 <?php
-namespace githubjeka\rbac\assets;
+namespace bscheshirwork\gui\assets;
 
 use yii\web\AssetBundle;
 
 /**
- * Class AppAsset represent main AssetBundle for the GUI RBAC module.
+ * Class AppAsset represent main AssetBundle for the GUI module.
  */
 class AppAsset extends AssetBundle
 {
@@ -24,7 +24,7 @@ class AppAsset extends AssetBundle
      * @inheritdoc
      */
     public $js = [
-        "https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.12/d3.min.js",
+        "https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.12/d3.min.js",//4.10 break d3-tip?
         "https://cdnjs.cloudflare.com/ajax/libs/d3-tip/0.6.7/d3-tip.min.js",
         "js/app.js",
     ];

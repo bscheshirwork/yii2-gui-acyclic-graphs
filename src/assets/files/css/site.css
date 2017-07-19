@@ -7,18 +7,6 @@
     stroke-linecap: "round";
 }
 
-.permissionLink,
-.permissionLinkLegend {
-    stroke-width: 3px;
-    stroke: #208E1E !important;
-}
-
-.roleLink,
-.roleLinkLegend {
-    stroke-width: 3px;
-    stroke: #D8582B !important;
-}
-
 .childLink,
 .childLinkLegend {
     stroke-width: 3px;
@@ -58,14 +46,6 @@ marker#marker {
 }
 
 .icon {
-}
-
-.permissionIcon {
-    fill: #208E1E;
-}
-
-.roleIcon {
-    fill: #D8582B;
 }
 
 .panel {

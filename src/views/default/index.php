@@ -82,7 +82,7 @@ $this->registerJs("var routes = $routes;", View::POS_BEGIN);
 
         <?php
         $form = ActiveForm::begin(['id' => "mainForm"]);
-        $model = new githubjeka\rbac\models\ItemForm(null)
+        $model = new bscheshirwork\gui\models\ItemForm(null)
         ?>
 
         <?= $form->field($model, 'type')->dropDownList([1 => "Role", 2 => "Permission"], ['size' => 2]) ?>
@@ -122,16 +122,5 @@ $this->registerJs("var routes = $routes;", View::POS_BEGIN);
             <small class="sub-header">click on element</small>
         </h4>
         <pre id="infoItem"></pre>
-
-        <h4 class="page-header">
-            <a href="https://github.com/yiisoft/yii2/blob/master/docs/guide/security-authorization.md#role-based-access-control-rbac">
-                RBAC basic concepts
-            </a>
-        </h4>
-        <h4 class="page-header">
-            <a href="https://github.com/githubjeka/gui-rbac-yii2">
-                Fork on github
-            </a>
-        </h4>
     </div>
 </div>

@@ -1,5 +1,5 @@
 <?php
-namespace githubjeka\rbac\models;
+namespace bscheshirwork\gui\models;
 
 use Yii;
 use yii\rbac\Item;

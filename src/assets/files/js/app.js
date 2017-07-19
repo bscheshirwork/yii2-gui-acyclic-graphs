@@ -19,9 +19,7 @@ d3.xhr(routes.items).get(function (error, XMLHttpRequest) {
     var unmarkNodesFunc = function () {
         linksGroup
             .selectAll(selectorLinks)
-            .classed('permissionLink', false)
-            .classed('childLink', false)
-            .classed('roleLink', false);
+            .classed('childLink', false);
 
         nodesGroup.selectAll(selectorNodes).classed('unmarked-node', false);
         $('input[name=search-input]').val(null);
@@ -37,14 +35,6 @@ d3.xhr(routes.items).get(function (error, XMLHttpRequest) {
 
             linksGroup
                 .selectAll(selectorLinks)
-                .classed('permissionLink', function (l) {
-                    if (l.target.type === "2" && (detectedNode === l.source || detectedNode === l.target)) {
-                        nodesMarked.push(l.source.index);
-                        nodesMarked.push(l.target.index);
-                        return true;
-                    }
-                    return false;
-                })
                 .classed('childLink', function (l) {
                     if (detectedNode === l.target) {
                         nodesMarked.push(l.target.index);
@@ -52,14 +42,6 @@ d3.xhr(routes.items).get(function (error, XMLHttpRequest) {
                     }
                     return false;
 
-                })
-                .classed('roleLink', function (l) {
-                    if (l.target.type === "1" && (detectedNode === l.source || detectedNode === l.target)) {
-                        nodesMarked.push(l.source.index);
-                        nodesMarked.push(l.target.index);
-                        return true;
-                    }
-                    return false;
                 });
 
             nodesGroup.selectAll(selectorNodes).classed('unmarked-node', function (d) {
@@ -110,12 +92,11 @@ d3.xhr(routes.items).get(function (error, XMLHttpRequest) {
     /* Initialize tooltip */
     tip = d3.tip().attr('class', 'd3-tip').html(function (d) {
         return "<strong class='text-success'>Name:</strong> <span>" + d.name + "</span><br>"
-            + "<strong class='text-success'>Description:</strong> <span>" + d.description + "</span><br>"
-            + "<strong class='text-success'>Rule:</strong> <span>" + d.ruleName + "</span>";
+            + "<strong class='text-success'>Description:</strong> <span>" + d.description + "</span><br>";
     });
 
     /* Invoke the tip in the context of your visualization */
-    vis.call(tip)
+    vis.call(tip);
 
     var mainGroup = vis.append('g');
 
@@ -249,9 +230,7 @@ d3.xhr(routes.items).get(function (error, XMLHttpRequest) {
             .attr("class", "node")
 
         group.append('rect')
-            .attr('class', function (d) {
-                return (d.type == 1) ? 'icon roleIcon' : 'icon permissionIcon';
-            })
+            .attr('class', 'icon')
             .attr("x", -rectW / 2)
             .attr("y", -rectH / 2)
             .attr("width", rectW)
@@ -277,7 +256,6 @@ d3.xhr(routes.items).get(function (error, XMLHttpRequest) {
                 document.getElementById("itemform-name").value = d.name;
                 document.getElementById("itemform-description").value = d.description ? d.description : '';
                 document.getElementById("itemform-data").value = d.data ? d.data : '';
-                document.getElementById("itemform-rulename").value = d.ruleName ? d.ruleName : '';
             });
 
         nodes.exit().remove();
@@ -553,7 +531,6 @@ d3.xhr(routes.items).get(function (error, XMLHttpRequest) {
                         if (n.name === node.oldName) {
                             json.nodes[i].name = node.name;
                             json.nodes[i].description = node.description;
-                            json.nodes[i].ruleName = node.ruleName;
                             json.nodes[i].type = node.type;
                             json.nodes[i].data = node.data;
                         }

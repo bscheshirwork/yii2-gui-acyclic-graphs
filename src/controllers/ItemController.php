@@ -1,7 +1,7 @@
 <?php
-namespace githubjeka\rbac\controllers;
+namespace bscheshirwork\gui\controllers;
 
-use githubjeka\rbac\models\ItemForm;
+use bscheshirwork\gui\models\ItemForm;
 use Yii;
 use yii\base\InvalidParamException;
 use yii\filters\ContentNegotiator;
