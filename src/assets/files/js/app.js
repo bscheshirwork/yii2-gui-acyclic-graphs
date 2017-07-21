@@ -72,10 +72,10 @@ var json,
             .attr("d", "M10,-3L0,0L10,3");
 
         vis.append('text')
-            .attr('dx', w - 50)
+            .attr('dx', w - messages.caption1.toString().length * 7)
             .attr('dy', 20)
             .attr('class', 'btn-marks')
-            .text('Mark all')
+            .text(messages.caption1)
             .on('click', unmarkNodesFunc);
 
         vis.append('text')
@@ -121,7 +121,7 @@ var json,
                 scaleMin = 1;
             }
             var startX = -scaleMin;
-            var startY = 10;
+            var startY = 100;
 
             d3.select('.label-coordinates').text(Math.round(startX * 100) / 100 + ' , ' + Math.round(startY * 100) / 100);
             mainGroup.attr("transform", "translate(" + [startX, startY] + ")scale(" + scaleMin + ")");
@@ -525,11 +525,9 @@ var json,
 
         $(modelOptions.formButtonsSelectors.submit).on('click', function () {
             $.post(routes.saveItem, $(modelOptions.formSelector).serialize())
-                .success(function (node) {
-                    var $pkCheck = true;
-                    eachPk(function (index, pk) {
-                        $pkCheck = $pkCheck && node[pk];
-                    });
+                .success(function (answer) {
+                    var node = answer.item;
+                    var $pkCheck = !answer.isNew;
                     if ($pkCheck) {
                         $.each(json.nodes, function (i, n) {
                             if (nodeIndex(n) === nodeIndex(node)){
@@ -538,7 +536,10 @@ var json,
                                 });
                             }
                         });
-                        d3.selectAll("text.nodetext").text(node[modelOptions.title]);
+
+                        d3.selectAll("text.nodetext").text(function (d, i) {
+                            return (nodeIndex(d) === nodeIndex(node) ? node[modelOptions.title] : d[modelOptions.title]);
+                        });
                     }
                     else {
                         force.nodes().push(node);
@@ -546,6 +547,7 @@ var json,
                         force.start();
                         center(force.nodes());
                     }
+                }).error(function (answer){
                 });
         });
 

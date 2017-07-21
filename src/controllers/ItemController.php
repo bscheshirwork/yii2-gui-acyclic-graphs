@@ -172,6 +172,7 @@ class ItemController extends Controller
         if (!empty($condition = $this->loadPkCondition())) {
             $model = $this->findModel($condition);
         }
+        $isNew = $model->isNewRecord;
 
         if (!$model->load(Yii::$app->request->post())) {
             Yii::$app->response->setStatusCode(406);
@@ -183,7 +184,7 @@ class ItemController extends Controller
             return ['errors' => $model->getErrors()];
         }
 
-        return $model;
+        return ['item' =>$model, 'isNew' => $isNew];
     }
 
     /**

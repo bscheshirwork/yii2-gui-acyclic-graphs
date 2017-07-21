@@ -19,6 +19,8 @@ $routes = Json::encode([
 $messages = Json::encode([
     'confirm1' => Module::t('js', 'Are you sure?'),
     'hint1' => Module::t('js', 'To delete an item double-click on him (node)'),
+    'caption1' => Module::t('js', 'Mark all'),
+    'caption2' => Module::t('js', 'Search by title...'),
 ]);
 $this->registerJs("var routes = $routes; var messages = $messages;", View::POS_BEGIN);
 ?>
@@ -28,7 +30,7 @@ $this->registerJs("var routes = $routes; var messages = $messages;", View::POS_B
         <div class="row search-block">
             <div class="col-md-4">
                 <div class="input-group">
-                    <input class="form-control" type="search" placeholder="Search for..." name="search-input">
+                    <input class="form-control" type="search" placeholder="<?= Module::t('main', 'Search for...') ?>" name="search-input">
 
                     <div class="input-group-btn">
                         <button class="btn btn-default" type="button" name="search-btn">

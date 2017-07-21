@@ -17,6 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    'Mark all' => 'Все сразу',
     'Are you sure?' => 'Вы уверены?',
     'To delete an item double-click on him (node)' => 'Для удаления элемента дважды кликните по нему (по узлу)',
 ];

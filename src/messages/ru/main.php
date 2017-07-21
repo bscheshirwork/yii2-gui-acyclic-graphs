@@ -21,5 +21,6 @@ return [
     'Connection item to other item' => 'Отношение элемента к другому элементу',
     'Dotted line mean connection child to his parent' => 'Пунктирная линия соединяет дочерний элемент с родительским',
     'Info' => 'Инфо',
+    'Search for...' => 'Искать...',
     'click on element' => 'клик на элементе',
 ];
