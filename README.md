@@ -1,4 +1,31 @@
+## Graph for parent-child representation relations on self-relates activeRecord
 
+i.e. for next composition
+```php
+/**
+ * @property MainModel[] $parents
+ * @property MainModel[] $childs
+ */
+class MainModel extends \yii\db\ActiveRecord
+{
+    var $id;
+}
+/**
+ * @property MainModel $parent
+ * @property MainModel $child
+ */
+class RelationModel extends \yii\db\ActiveRecord
+{
+    var $parentId;
+    var $childId;
+}
+```
+
+via table property can be prefixed `parent`, `child`, can accept complex pk;
+
+graphical representation and actions similar at [githubjeka/yii2-gui-rbac](https://github.com/githubjeka/gui-rbac-yii2)
+
+![http://i.imgur.com/BXTKymp.jpg](http://i.imgur.com/BXTKymp.jpg)
 
 ## How to install
 
@@ -9,18 +36,21 @@ Follow the commands:
 ```php
 // '/config/web.php' for Basic or '/backend/config/main' - Advanced Yii2 application.
 'modules' => [
-  'rbac' => [
-    'class' => 'bscheshirwork\gui\Module',
-    'as access' => [ // if you need to set access
-      'class' => 'yii\filters\AccessControl',
-      'rules' => [
-          [
-              'allow' => true,
-              'roles' => ['@'] // all auth users 
-          ],
-      ]
-    ]
-  ],
+    'gui' => [
+        'class' => 'bscheshirwork\gui\Module',
+        'as access' => [ // if you need to set access
+            'class' => 'yii\filters\AccessControl',
+            'rules' => [
+                [
+                    'allow' => true,
+                    'roles' => ['@'] // all auth users 
+                ],
+            ],
+            'mainModel' => 'common\models\MainModel', // model, who have relations. (rectangles)
+            'mainModelFormView' => '@backend/views/status/_form-gui', //Active form for MainModel. See @vendor/bscheshirwork/yii2-gui-acyclic-graphs/src/views/default/_form
+            'relationModel' => 'common\models\RelationModel', // via model (arrows)
+        ],
+    ],
 ],
 ```
-- go to url `/index.php?r=rbac`
+- go to url `/index.php?r=gui`

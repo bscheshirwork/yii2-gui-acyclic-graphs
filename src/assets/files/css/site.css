@@ -1,6 +1,6 @@
 .link,
 .linkLegend {
-    stroke-width: 1px;
+    stroke-width: 2px;
     stroke: #777;
     fill: none;
     cursor: no-drop;
@@ -20,7 +20,7 @@
 
 .scopeCircle {
     stroke: #3B6FBA;
-    stroke-width: 1.5px;
+    stroke-width: 2px;
     fill: rgba(160, 255, 149, 0.22);
     stroke-dasharray: 10, 10;
 }
@@ -46,6 +46,7 @@ marker#marker {
 }
 
 .icon {
+    fill: #D8582B;
 }
 
 .panel {
@@ -92,4 +93,15 @@ marker#marker {
 .active-node rect {
     stroke: black;
     stroke-width: 3px;
+}
+
+details.form-group summary{
+    cursor: pointer;
+}
+
+details.form-group summary:after{
+    content: "\25BC";
+}
+.container-fluid{
+    margin-top: 20px;
 }
