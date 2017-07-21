@@ -23,7 +23,11 @@ class RelationModel extends \yii\db\ActiveRecord
 
 via table property can be prefixed `parent`, `child`, can accept complex pk;
 
-graphical representation and actions similar at [githubjeka/yii2-gui-rbac](https://github.com/githubjeka/gui-rbac-yii2)
+graphical representation and actions:
+
+![default](https://user-images.githubusercontent.com/5769211/28467279-0840024e-6e38-11e7-9ac4-cc7f7b5f15f1.png)
+
+similar at [githubjeka/yii2-gui-rbac](https://github.com/githubjeka/gui-rbac-yii2)
 
 ![http://i.imgur.com/BXTKymp.jpg](http://i.imgur.com/BXTKymp.jpg)
 
