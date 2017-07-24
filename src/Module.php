@@ -73,6 +73,7 @@ class Module extends \yii\base\Module
             'sourceLanguage' => 'en-US',
             'basePath' => '@vendor/bscheshirwork/yii2-gui-acyclic-graphs/src/messages',
             'fileMap' => [
+                'bscheshirwork/gui/errors' => 'errors.php',
                 'bscheshirwork/gui/main' => 'main.php',
                 'bscheshirwork/gui/form' => 'form.php',
                 'bscheshirwork/gui/js' => 'js.php',

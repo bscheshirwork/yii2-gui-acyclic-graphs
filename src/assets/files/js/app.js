@@ -89,7 +89,7 @@ var json,
         vis.append('path').attr('d', 'M 5 40 L 5 5').attr('class', 'link').attr("marker-start", "url(#marker)");
         vis.append('path').attr('d', 'M 50 5 L 5 5').attr('class', 'link').attr("marker-start", "url(#marker)");
 
-        if(tipFunction){
+        if (tipFunction) {
             /* Initialize tooltip */
             var tip = d3.tip().attr('class', 'd3-tip').html(tipFunction);
             /* Invoke the tip in the context of your visualization */
@@ -264,6 +264,25 @@ var json,
 
         var dragTarget = null;
 
+
+        var showSummary = function (answer) {
+            var message = answer.responseJSON.message;
+            var $form = $(modelOptions.formSelector);
+            var data = $form.data('yiiActiveForm'),
+                $summary = $form.find(data.settings.errorSummary),
+                $ul = $summary.find('ul').empty();
+            if ($summary.length && message.length) {
+                var error = $('<li/>');
+                if (data.settings.encodeErrorSummary) {
+                    error.text(message);
+                } else {
+                    error.html(message);
+                }
+                $ul.append(error);
+                $summary.toggle($ul.find('li').length > 0);
+            }
+        };
+
         var addLink = function (sourceIndex, targetIndex) {
             var isInside = false;
             var cross = false;
@@ -294,7 +313,7 @@ var json,
                     setLinks(json.links);
 
                     force.start();
-                });
+                }).error(showSummary);
             }
         };
 
@@ -306,7 +325,7 @@ var json,
                     "target": json.links[index].target
                 }).success(function (data) {
                     console.log(data);
-                });
+                }).error(showSummary);
 
                 json.links.splice(index, 1);
 
@@ -526,29 +545,32 @@ var json,
         $(modelOptions.formButtonsSelectors.submit).on('click', function () {
             $.post(routes.saveItem, $(modelOptions.formSelector).serialize())
                 .success(function (answer) {
-                    var node = answer.item;
-                    var $pkCheck = !answer.isNew;
-                    if ($pkCheck) {
-                        $.each(json.nodes, function (i, n) {
-                            if (nodeIndex(n) === nodeIndex(node)){
-                                $.each(modelOptions.formElementsSelectors, function (key, value) {
-                                    json.nodes[i][key] = node[key];
-                                });
-                            }
-                        });
+                    if (answer.errors) {
+                        var errors = answer.errors;
+                        $(modelOptions.formSelector).yiiActiveForm('updateMessages', errors, true);
+                    } else {
+                        var node = answer.item;
+                        if (!answer.isNew) {
+                            $.each(json.nodes, function (i, n) {
+                                if (nodeIndex(n) === nodeIndex(node)) {
+                                    $.each(modelOptions.formElementsSelectors, function (key, value) {
+                                        json.nodes[i][key] = node[key];
+                                    });
+                                }
+                            });
 
-                        d3.selectAll("text.nodetext").text(function (d, i) {
-                            return (nodeIndex(d) === nodeIndex(node) ? node[modelOptions.title] : d[modelOptions.title]);
-                        });
+                            d3.selectAll("text.nodetext").text(function (d, i) {
+                                return (nodeIndex(d) === nodeIndex(node) ? node[modelOptions.title] : d[modelOptions.title]);
+                            });
+                        }
+                        else {
+                            force.nodes().push(node);
+                            setNodes(force.nodes());
+                            force.start();
+                            center(force.nodes());
+                        }
                     }
-                    else {
-                        force.nodes().push(node);
-                        setNodes(force.nodes());
-                        force.start();
-                        center(force.nodes());
-                    }
-                }).error(function (answer){
-                });
+                }).error(showSummary);
         });
 
         $(modelOptions.formButtonsSelectors.delete).on('click', function () {
@@ -560,14 +582,14 @@ var json,
                 $.post(routes.deleteItem, $(modelOptions.formSelector).serialize())
                     .success(function (data) {
                         window.location.reload();
-                    });
+                    }).error(showSummary);
             } else {
                 alert(messages.hint1);
             }
 
         });
 
-        var goSearch = function(){
+        var goSearch = function () {
             var nodeTitle = $('input[name=search-input]').val();
             var detectedNode;
             force.nodes().forEach(function (n, i) {
@@ -586,10 +608,10 @@ var json,
             }
         });
 
-        var eachPk = function(f){
+        var eachPk = function (f) {
             $.each(modelOptions.pk, f);
         };
-        var nodeIndex = function(node){
+        var nodeIndex = function (node) {
             var i = '';
             eachPk(function (index, pk) {
                 i = i + '' + node[pk];

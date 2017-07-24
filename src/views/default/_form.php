@@ -43,7 +43,7 @@ $this->registerJs("var modelOptions = $modelOptions; \n$jsFunction", View::POS_B
 
 <?php $form = ActiveForm::begin([
     'id' => "mainForm",
-    'enableClientScript' => false,
+    'enableClientScript' => true,
 ]); ?>
 
 <?= $form->field($model, 'id')->textInput(['readonly' => 'readonly']) ?>
@@ -56,6 +56,8 @@ $this->registerJs("var modelOptions = $modelOptions; \n$jsFunction", View::POS_B
     <?= $form->field($model, 'description')->textarea(['rows' => 2]) ?>
 
 </details>
+
+<?= $form->errorSummary($model); ?>
 
 <div class="form-group">
     <?=

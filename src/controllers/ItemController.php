@@ -2,15 +2,19 @@
 
 namespace bscheshirwork\gui\controllers;
 
+use bscheshirwork\gui\Module;
 use Yii;
 use yii\base\InvalidConfigException;
 use yii\db\ActiveRecord;
 use yii\filters\ContentNegotiator;
 use yii\filters\VerbFilter;
+use yii\helpers\Html;
 use yii\web\BadRequestHttpException;
 use yii\web\Controller;
+use yii\web\HttpException;
 use yii\web\NotFoundHttpException;
 use yii\web\Response;
+use yii\web\ServerErrorHttpException;
 
 /**
  * Class ItemController
@@ -54,7 +58,8 @@ class ItemController extends Controller
                 'class' => $this->module->mainModel,
             ]);
         } catch (\ReflectionException $exception) {
-            throw new InvalidConfigException('Please check "mainModel" into "' . $this->module->id . '" config');
+            throw new InvalidConfigException(Module::t('errors', 'Please check "{modelName}" into "{moduleName}" config'
+                . $this->module->id . '" config', ['modelName' => 'mainModel', 'moduleName' => $this->module->id]));
         }
     }
 
@@ -69,7 +74,8 @@ class ItemController extends Controller
                 'class' => $this->module->relationModel,
             ]);
         } catch (\ReflectionException $exception) {
-            throw new InvalidConfigException('Please check "relationModel" into "' . $this->module->id . '" config');
+            throw new InvalidConfigException(Module::t('errors', 'Please check "{modelName}" into "{moduleName}" config'
+                . $this->module->id . '" config', ['modelName' => 'relationModel', 'moduleName' => $this->module->id]));
         }
     }
 
@@ -158,7 +164,7 @@ class ItemController extends Controller
         if (($model = $model::findOne($idCondition)) !== null) {
             return $model;
         } else {
-            throw new NotFoundHttpException('The requested item does not exist.');
+            throw new NotFoundHttpException(Module::t('errors', 'The requested item does not exist.'));
         }
     }
 
@@ -175,13 +181,16 @@ class ItemController extends Controller
         $isNew = $model->isNewRecord;
 
         if (!$model->load(Yii::$app->request->post())) {
-            Yii::$app->response->setStatusCode(406);
-            return ['errors' => ['Wrong Post data']];
+            throw new HttpException(406, Module::t('errors', 'Wrong POST data'));
         }
 
         if (!$model->save()) {
-            Yii::$app->response->setStatusCode(406);
-            return ['errors' => $model->getErrors()];
+            //like a ActiveForm::validate($model)
+            $result = [];
+            foreach ($model->getErrors() as $attribute => $errors) {
+                $result[Html::getInputId($model, $attribute)] = $errors;
+            }
+            return ['errors' => $result];
         }
 
         return ['item' =>$model, 'isNew' => $isNew];
@@ -197,14 +206,14 @@ class ItemController extends Controller
         if (!empty($condition = $this->loadPkCondition())) {
             return (bool)$this->findModel($condition)->delete();
         } else {
-            throw new BadRequestHttpException('The POST param(s) of item pk has missed.');
+            throw new BadRequestHttpException(Module::t('errors', 'The POST param(s) of item pk has missed.'));
         }
     }
 
     /**
      * Adds a child item to a parent item.
-     * @return boolean
-     * @throws BadRequestHttpException
+     * @return bool
+     * @throws ServerErrorHttpException
      */
     public function actionAddChild()
     {
@@ -220,7 +229,7 @@ class ItemController extends Controller
         try {
             return $relationModel->save();
         } catch (\PDOException $e) {
-            throw new BadRequestHttpException('Save failure ' . $e->getMessage());
+            throw new ServerErrorHttpException(Module::t('errors', 'Save failure {reason}', ['reason' => $e->getMessage()]));
         }
     }
 
@@ -255,6 +264,6 @@ class ItemController extends Controller
         if (($parentCondition = $this->pkCondition($post['source'])) && ($childCondition = $this->pkCondition($post['target']))) {
             return ['parent' => $this->findModel($parentCondition), 'child' => $this->findModel($childCondition)];
         }
-        throw new BadRequestHttpException('The POST "source" and "target" params has missed.');
+        throw new BadRequestHttpException(Module::t('errors', 'The POST "source" and "target" params has missed.'));
     }
 }
