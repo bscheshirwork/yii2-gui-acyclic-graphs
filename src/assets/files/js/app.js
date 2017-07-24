@@ -299,16 +299,15 @@ var json,
             var cross = false;
 
             json.links.forEach(function (d) {
-                if (d.source.index == sourceIndex && d.target.index == targetIndex) {
+                if (d.source.index === sourceIndex && d.target.index === targetIndex) {
                     isInside = true;
                 }
-                if (d.target.index == sourceIndex && d.source.index == targetIndex) {
-                    isInside = true;
+                if (d.target.index === sourceIndex && d.source.index === targetIndex) {
                     cross = true;
                 }
             });
 
-            if (!isInside) {
+            if (!isInside) { // (!isInside && !cross) for one-direction
 
                 $.post(routes.addChild, {
                     "source": force.nodes()[sourceIndex],
