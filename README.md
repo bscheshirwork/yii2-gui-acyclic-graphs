@@ -36,7 +36,7 @@ similar at [githubjeka/yii2-gui-rbac](https://github.com/githubjeka/gui-rbac-yii
 Follow the commands: 
 - Add to your composer.json `"bscheshirwork/yii2-gui-acyclic-graphs": "*@dev"`
 - Run `composer update`
-- Add to `@app/config/main.php` the code:
+- Add to `config` the code:
 ```php
 // '/config/web.php' for Basic or '/backend/config/main' - Advanced Yii2 application.
 'modules' => [
@@ -51,7 +51,7 @@ Follow the commands:
                 ],
             ],
             'mainModel' => 'common\models\MainModel', // model, who have relations. (rectangles)
-            'mainModelFormView' => '@backend/views/status/_form-gui', //Active form for MainModel. See @vendor/bscheshirwork/yii2-gui-acyclic-graphs/src/views/default/_form
+            'mainModelFormView' => '@backend/views/main-model/_form-gui', //Active form for MainModel. See @vendor/bscheshirwork/yii2-gui-acyclic-graphs/src/views/default/_form
             'relationModel' => 'common\models\RelationModel', // via model (arrows)
         ],
     ],
