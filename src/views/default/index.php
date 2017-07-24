@@ -8,6 +8,7 @@ use yii\web\View;
 
 /* @var $this View */
 /* @var $model ActiveRecord */
+/* @var $formView string */
 
 $routes = Json::encode([
     'items' => Url::to(['item/list']),
@@ -63,7 +64,7 @@ $this->registerJs("var routes = $routes; var messages = $messages;", View::POS_B
     </div>
     <div class="col-md-3 panel">
 
-        <?= $this->render('_form', [
+        <?= $this->render($formView, [
             'model' => $model,
         ]); ?>
 

@@ -29,6 +29,7 @@ class DefaultController extends Controller
         $this->layout = "main.php";
         return $this->render('index', [
             'model' => $this->getMainModel(),
+            'formView' => $this->module->mainModelFormView,
         ]);
     }
 }
