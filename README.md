@@ -25,7 +25,7 @@ via table property can be prefixed `parent`, `child`, can accept complex pk;
 
 graphical representation and actions:
 
-![default](https://user-images.githubusercontent.com/5769211/28467279-0840024e-6e38-11e7-9ac4-cc7f7b5f15f1.png)
+![default](https://user-images.githubusercontent.com/5769211/28527000-eab0b6c2-7091-11e7-8efd-f1beb47f7d22.png)
 
 similar at [githubjeka/yii2-gui-rbac](https://github.com/githubjeka/gui-rbac-yii2)
 
