@@ -131,6 +131,36 @@ var json,
             vis.call(zoomListener).on("dblclick.zoom", null);
         }
 
+        var showSummary = function (answer) {
+            var message = answer.responseJSON.message;
+            var $form = $(modelOptions.formSelector);
+            var data = $form.data('yiiActiveForm'),
+                $summary = $form.find(data.settings.errorSummary),
+                $ul = $summary.find('ul').empty();
+            if ($summary.length && message.length) {
+                var error = $('<li/>');
+                if (data.settings.encodeErrorSummary) {
+                    error.text(message);
+                } else {
+                    error.html(message);
+                }
+                $ul.append(error);
+                $summary.toggle($ul.find('li').length > 0);
+            }
+        };
+
+        var eachPk = function (f) {
+            $.each(modelOptions.pk, f);
+        };
+
+        var nodeIndex = function (node) {
+            var i = '';
+            eachPk(function (index, pk) {
+                i = i + '_' + node[pk];
+            });
+            return i;
+        };
+
         var nodes = function () {
 
             var level, nodesLocal = [];
@@ -220,7 +250,7 @@ var json,
         var setNodes = function (data) {
             var nodes = nodesGroup.selectAll(selectorNodes)
                 .data(data, function (d) {
-                    return d.name;
+                    return nodeIndex(d);
                 });
 
             var group = nodes.enter()
@@ -240,7 +270,7 @@ var json,
             group.append("svg:text")
                 .attr("class", "nodetext")
                 .text(function (d, i) {
-                    return (d.name.length < 20) ? d.name : d.name.toString().substring(0, 10) + '...';
+                    return (d[modelOptions.title].length < 20) ? d[modelOptions.title] : d[modelOptions.title].toString().substring(0, 10) + '...';
                 }).style("text-anchor", "middle");
 
 
@@ -263,25 +293,6 @@ var json,
             .on("dragend", dragend);
 
         var dragTarget = null;
-
-
-        var showSummary = function (answer) {
-            var message = answer.responseJSON.message;
-            var $form = $(modelOptions.formSelector);
-            var data = $form.data('yiiActiveForm'),
-                $summary = $form.find(data.settings.errorSummary),
-                $ul = $summary.find('ul').empty();
-            if ($summary.length && message.length) {
-                var error = $('<li/>');
-                if (data.settings.encodeErrorSummary) {
-                    error.text(message);
-                } else {
-                    error.html(message);
-                }
-                $ul.append(error);
-                $summary.toggle($ul.find('li').length > 0);
-            }
-        };
 
         var addLink = function (sourceIndex, targetIndex) {
             var isInside = false;
@@ -421,10 +432,10 @@ var json,
                                     return this.items.length;
                                 };
 
-                                this.index = function (name) {
+                                this.index = function (ni) {
                                     var index = null;
                                     this.items.forEach(function (item, i) {
-                                        if (item.name === name) {
+                                        if (nodeIndex(item) === ni) {
                                             index = i + 1;
                                         }
                                     });
@@ -607,17 +618,6 @@ var json,
                 goSearch();
             }
         });
-
-        var eachPk = function (f) {
-            $.each(modelOptions.pk, f);
-        };
-        var nodeIndex = function (node) {
-            var i = '';
-            eachPk(function (index, pk) {
-                i = i + '' + node[pk];
-            });
-            return i;
-        };
 
         setLinks(json.links);
         setNodes(json.nodes);
