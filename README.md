@@ -50,10 +50,11 @@ Follow the commands:
                     'roles' => ['@'] // all auth users 
                 ],
             ],
-            'mainModel' => 'common\models\MainModel', // model, who have relations. (rectangles)
-            'mainModelFormView' => '@backend/views/main-model/_form-gui', //Active form for MainModel. See @vendor/bscheshirwork/yii2-gui-acyclic-graphs/src/views/default/_form
-            'relationModel' => 'common\models\RelationModel', // via model (arrows)
         ],
+        'mainModel' => 'common\models\MainModel', // model, who have relations. (rectangles)
+        'mainModelFormView' => '@backend/views/main-model/_form-gui', //Active form for MainModel. See @vendor/bscheshirwork/yii2-gui-acyclic-graphs/src/views/default/_form
+        'relationModel' => 'common\models\RelationModel', // via model (arrows)
+        'arrowDirection' => bscheshirwork\gui\Module::PARENT_TO_CHILD, // direction of arrow representation
     ],
 ],
 ```
