@@ -141,10 +141,20 @@ class ItemController extends Controller
                 $keyParent .= '|' . $link->{'parent' . ucfirst($pk)};
                 $keyChild .= '|' . $link->{'child' . ucfirst($pk)};
             }
+//            $links[] = [
+//                'source' => $indexList[$keyParent],
+//                'target' => $indexList[$keyChild],
+//            ];
             $links[] = [
-                'source' => $indexList[$keyParent],
-                'target' => $indexList[$keyChild],
-            ];
+                $this->module::CHILD_TO_PARENT => [
+                    'source' => $indexList[$keyParent],
+                    'target' => $indexList[$keyChild],
+                ],
+                $this->module::PARENT_TO_CHILD => [
+                    'source' => $indexList[$keyChild],
+                    'target' => $indexList[$keyParent],
+                ],
+                ][$this->module->arrowDirection];
         }
 
         return ['nodes' => $nodes, 'links' => $links];
@@ -217,7 +227,16 @@ class ItemController extends Controller
      */
     public function actionAddChild()
     {
-        ['parent' => $parent, 'child' => $child] = $this->getSourceAndTarget();
+//        ['source' => $parent, 'target' => $child] = $this->getSourceAndTarget();
+        switch ($this->module->arrowDirection){
+            default:
+            case $this->module::CHILD_TO_PARENT:
+                ['source' => $parent, 'target' => $child] = $this->getSourceAndTarget();
+                break;
+            case $this->module::PARENT_TO_CHILD:
+                ['source' => $child, 'target' => $parent] = $this->getSourceAndTarget();
+                break;
+        }
 
         $model = $this->getMainModel();
         $primaryKey = $model->tableSchema->primaryKey;
@@ -239,7 +258,16 @@ class ItemController extends Controller
      */
     public function actionRemoveChild()
     {
-        ['parent' => $parent, 'child' => $child] = $this->getSourceAndTarget();
+//        ['source' => $parent, 'target' => $child] = $this->getSourceAndTarget();
+        switch ($this->module->arrowDirection){
+            default:
+            case $this->module::CHILD_TO_PARENT:
+                ['source' => $parent, 'target' => $child] = $this->getSourceAndTarget();
+                break;
+            case $this->module::PARENT_TO_CHILD:
+                ['source' => $child, 'target' => $parent] = $this->getSourceAndTarget();
+                break;
+        }
 
         $model = $this->getMainModel();
         $primaryKey = $model->tableSchema->primaryKey;
@@ -261,8 +289,8 @@ class ItemController extends Controller
     protected function getSourceAndTarget()
     {
         $post = Yii::$app->getRequest()->post();
-        if (($parentCondition = $this->pkCondition($post['source'])) && ($childCondition = $this->pkCondition($post['target']))) {
-            return ['parent' => $this->findModel($parentCondition), 'child' => $this->findModel($childCondition)];
+        if (($sourceCondition = $this->pkCondition($post['source'])) && ($targetCondition = $this->pkCondition($post['target']))) {
+            return ['source' => $this->findModel($sourceCondition), 'target' => $this->findModel($targetCondition)];
         }
         throw new BadRequestHttpException(Module::t('errors', 'The POST "source" and "target" params has missed.'));
     }

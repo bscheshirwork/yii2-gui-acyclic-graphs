@@ -13,13 +13,18 @@ use yii\base\InvalidConfigException;
  * ~~~
  * ```php
  *   'modules' => [
- *       'rbac' => [
+ *       'gui' => [
  *           'class' => 'bscheshirwork\gui\Module',
- *               'as access' => [
- *                   'class' => 'yii\filters\AccessControl',
- *                   'rules' => [['allow' => true,'roles' => ['@']],
- *              ]
- *           ]
+ *           'as access' => [
+ *               'class' => 'yii\filters\AccessControl',
+ *               'rules' => [
+ *                   ['allow' => true,'roles' => ['@']],
+ *               ],
+ *           ],
+ *           'mainModel' => 'common\models\MainModel', // model, who have relations. (rectangles)
+ *           'mainModelFormView' => '@backend/views/main-model/_form-gui', //Active form for MainModel. See @vendor/bscheshirwork/yii2-gui-acyclic-graphs/src/views/default/_form
+ *           'relationModel' => 'common\models\RelationModel', // via model (arrows)
+ *           'arrowDirection' => bscheshirwork\gui\Module::PARENT_TO_CHILD, // direction of arrow representation
  *       ],
  *   ],
  * ~~~
@@ -29,6 +34,8 @@ use yii\base\InvalidConfigException;
  */
 class Module extends \yii\base\Module
 {
+    const CHILD_TO_PARENT = 0;
+    const PARENT_TO_CHILD = 1;
     /**
      * The main assetBundle for GUI. This asset bundle will be load in main layout.
      * By default AppAsset uses content delivery network (cdnjs.com) for scripts that used in GUI.
@@ -43,6 +50,11 @@ class Module extends \yii\base\Module
     public $mainModelFormView = '_form';
 
     public $relationModel = null;
+
+    /**
+     * @var int direction for the arrow [0 => child -> parent, 1 => parent -> child]
+     */
+    public $arrowDirection = self::CHILD_TO_PARENT;
 
     /**
      * @inheritdoc

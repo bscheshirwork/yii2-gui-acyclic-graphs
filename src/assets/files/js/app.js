@@ -166,6 +166,7 @@ var json,
             var level, nodesLocal = [];
             var mark = 1;
             var unmark = 1;
+            var dy = 0;
 
             json.links.forEach(function (d) {
                 if (nodesLocal[d.source] === undefined) {
@@ -180,7 +181,8 @@ var json,
 
                 if (nodesLocal[i]) {
                     n.x = rectW * 1.5 * mark;
-                    n.y = rectH * (level - nodesLocal[i]);
+                    n.y = rectH * (level - nodesLocal[i]) + dy;
+                    dy += 10;
                     mark++;
                 } else {
                     n.x = rectW * 1.5 * unmark;
