@@ -557,9 +557,9 @@ var json,
         $(modelOptions.formButtonsSelectors.submit).on('click', function () {
             $.post(routes.saveItem, $(modelOptions.formSelector).serialize())
                 .then(function (answer) {
+                    var errors = [];
                     if (answer.errors) {
-                        var errors = answer.errors;
-                        $(modelOptions.formSelector).yiiActiveForm('updateMessages', errors, true);
+                        errors = answer.errors;
                     } else {
                         var node = answer.item;
                         if (!answer.isNew) {
@@ -582,6 +582,7 @@ var json,
                             center(force.nodes());
                         }
                     }
+                    $(modelOptions.formSelector).yiiActiveForm('updateMessages', errors, true);
                 }).catch(showSummary);
         });
 
