@@ -19,5 +19,5 @@
 return [
     'Mark all' => 'Все сразу',
     'Are you sure?' => 'Вы уверены?',
-    'To delete an item double-click on him (node)' => 'Для удаления элемента дважды кликните по нему (по узлу)',
+    'You mast select a node by double click first' => 'Сначала необходимо выделить элемент двойным щелчком',
 ];

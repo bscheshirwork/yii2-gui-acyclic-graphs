@@ -314,7 +314,7 @@ var json,
                 $.post(routes.addChild, {
                     "source": force.nodes()[sourceIndex],
                     "target": force.nodes()[targetIndex]
-                }).success(function (data) {
+                }).then(function (data) {
                     json.links.push({
                         "source": force.nodes()[sourceIndex],
                         "target": force.nodes()[targetIndex]
@@ -325,7 +325,7 @@ var json,
                     setLinks(json.links);
 
                     force.start();
-                }).error(showSummary);
+                }).canch(showSummary);
             }
         };
 
@@ -335,9 +335,9 @@ var json,
                 $.post(routes.removeChild, {
                     "source": json.links[index].source,
                     "target": json.links[index].target
-                }).success(function (data) {
+                }).then(function (data) {
                     console.log(data);
-                }).error(showSummary);
+                }).catch(showSummary);
 
                 json.links.splice(index, 1);
 
@@ -556,7 +556,7 @@ var json,
 
         $(modelOptions.formButtonsSelectors.submit).on('click', function () {
             $.post(routes.saveItem, $(modelOptions.formSelector).serialize())
-                .success(function (answer) {
+                .then(function (answer) {
                     if (answer.errors) {
                         var errors = answer.errors;
                         $(modelOptions.formSelector).yiiActiveForm('updateMessages', errors, true);
@@ -582,7 +582,7 @@ var json,
                             center(force.nodes());
                         }
                     }
-                }).error(showSummary);
+                }).catch(showSummary);
         });
 
         $(modelOptions.formButtonsSelectors.delete).on('click', function () {
@@ -592,9 +592,9 @@ var json,
             });
             if ($pkCheck) {
                 $.post(routes.deleteItem, $(modelOptions.formSelector).serialize())
-                    .success(function (data) {
+                    .then(function (data) {
                         window.location.reload();
-                    }).error(showSummary);
+                    }).catch(showSummary);
             } else {
                 alert(messages.hint1);
             }

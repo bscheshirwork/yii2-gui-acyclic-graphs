@@ -19,7 +19,7 @@ $routes = Json::encode([
 ]);
 $messages = Json::encode([
     'confirm1' => Module::t('js', 'Are you sure?'),
-    'hint1' => Module::t('js', 'To delete an item double-click on him (node)'),
+    'hint1' => Module::t('js', 'You mast select a node by double click first'),
     'caption1' => Module::t('js', 'Mark all'),
     'caption2' => Module::t('js', 'Search by title...'),
 ]);
@@ -43,7 +43,7 @@ $this->registerJs("var routes = $routes; var messages = $messages;", View::POS_B
         </div>
         <div class="row">
             <div class="col-xs-4">
-                <small><?= Module::t('main', 'Double-click on node for delete or update<br>To delete relation double-click on the connection.<br>To connect move node to other node.') ?>
+                <small><?= Module::t('main', 'Double-click on node for open in form for update or delete<br>To delete relation double-click on the connection.<br>To connect move node (parent) to other node (child).') ?>
                 </small>
             </div>
 

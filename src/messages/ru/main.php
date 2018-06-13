@@ -17,7 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Double-click on node for delete or update<br>To delete relation double-click on the connection.<br>To connect move node to other node.' => 'Двойной щелчёк на узел для удаления.<br>Двойной щелчёк на соеденительную линию для удаления отношения<br>Для привязки перетащите узел на другой узел',
+    'Double-click on node for open in form for update or delete<br>To delete relation double-click on the connection.<br>To connect move node (parent) to other node (child).' => 'Двойной щелчёк на узел для открытия в форме редактирования/удаления.<br>Двойной щелчёк на соеденительную линию для удаления отношения<br>Для привязки перетащите узел (предок) на другой узел (потомок)',
     'Connection item to other item' => 'Отношение элемента к другому элементу',
     'Dotted line mean connection child to his parent' => 'Пунктирная линия соединяет дочерний элемент с родительским',
     'Info' => 'Инфо',
